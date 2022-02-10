@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100&family=Open+Sans+Condensed:wght@300;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Detaljer</title>
+    <style>
+      section {
+        display: flex;
+        justify-content: center;
+        margin: 5px;
+        padding: 5px;
+      }
+      h2 {
+        font-family: "Source Serif 4", sans-serif;
+        font-size: 1.1rem;
+      }
+      h3 {
+        font-family: "Source Serif 4", sans-serif;
+        font-size: 0.8rem;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      p {
+        font-family: "Source Serif 4", sans-serif;
+        font-size: 0.7rem;
+        font-weight: lighter;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      button {
+        cursor: pointer;
+        margin: 2px;
+        border-radius: 5px;
+        padding: 4px 8px;
+        background-color: #f2f2f2;
+        border: none;
+        list-style: none;
+        font-family: "Source Serif 4", sans-serif;
+        display: inline-block;
+        font-size: 0.9rem;
+        margin: 10px;
+      }
+      article {
+        padding: 5px;
+        margin: 5px;
+        /*border-radius: 5%;*/
+        background-color: #f2f2f2;
+        border: 1px solid;
+        border-color: rgb(200, 188, 182);
+        display: inline-block;
+      }
+      img {
+        max-width: 100%;
+      }
+      @media only screen and (min-width: 700px) {
+        h2 {
+          font-family: "Open Sans Condensed", sans-serif;
+          font-size: 1.5rem;
+        }
+        h3 {
+          font-family: "Source Serif 4", sans-serif;
+          font-size: 1.1rem;
+        }
+
+        article {
+          padding: 10px;
+          margin: 20px;
+          background-color: #f2f2f2;
+          width: 600px;
+          height: 600px;
+        }
+        p {
+          font-family: "Source Serif 4", sans-serif;
+          font-size: 1rem;
+          font-weight: lighter;
+          margin-top: 30px;
+        }
+        section {
+          display: flex;
+          justify-content: space-around;
+          padding: 20px;
+          margin: 20px;
+        }
+        button {
+          background-color: #f2f2f2;
+          border: none;
+          list-style: none;
+          border-radius: 8px;
+          padding: 8px 16px;
+          text-align: center;
+          text-decoration: none;
+          font-family: "Source Serif 4", sans-serif;
+          display: inline-block;
+          font-size: 1rem;
+          cursor: pointer;
+          margin: 10px;
+        }
+        button:hover {
+          background-color: #f2f2f2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <button>Tilbage</button>
+      <section>
+        <article>
+          <h2></h2>
+          <p></p>
+          <h3></h3>
+          <!-- <p></p> -->
+          <img src="" alt="" />
+        </article>
+      </section>
+    </main>
+
+    <script>
+      /*____url søgeparameter____*/
+      const urlParams = new URLSearchParams(window.location.search);
+      /*___går op i søger efter id__*/
+      const id = urlParams.get("id");
+      console.log({ id });
+      let menu;
+
+      const url = `https://babushka-dd8a.restdb.io/rest/menu/${id}`;
+      const key = "600ec2fb1346a1524ff12de4";
+      const options = {
+        headers: {
+          "x-apikey": key,
+        },
+      };
+
+      async function hentdata() {
+        const respons = await fetch(url, options);
+        menu = await respons.json();
+        console.log("menu", menu);
+        vis();
+      }
+
+      function vis() {
+        document.querySelector("h2").textContent = menu.navn;
+        document.querySelector("h3").textContent = menu.pris + ".kr";
+        document.querySelector("p").textContent = menu.langbeskrivelse;
+        /* document.querySelector("article:nth-child(2) p").textContent =
+          menu.langbeskrivelse; */
+        document.querySelector("img").src = `medium/${menu.billednavn}-md.jpg`;
+      }
+
+      hentdata();
+
+      document.querySelector("button").addEventListener("click", () => {
+        history.back();
+      });
+    </script>
+  </body>
+</html>
